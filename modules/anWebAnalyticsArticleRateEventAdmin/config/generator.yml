@@ -1,0 +1,47 @@
+generator:
+  class: dmAdminDoctrineGenerator
+  param:
+    model_class: AnWebAnalyticsArticleRateEvent
+    theme: dmAdmin
+    non_verbose_templates: true
+    with_show: false
+    route_prefix: an_web_analytics_article_rate_event
+    with_doctrine_route: false
+    config:
+      actions: ~
+      fields: {  }
+      list:
+        actions:  {  }
+        batch_actions:
+          _delete:
+            credentials:    manage_web_analytics_events
+        display:
+          - visitor_cookie_id
+          - visit_cookie_id
+          - article_id 
+          - visitor_ip
+          - rate
+          - created_at
+        sort:
+          - created_at
+          - desc
+        table_method: getAdminListQuery
+        table_count_method: ~
+        sortable: false
+      filter:
+        display:
+          - id
+          - visitor_cookie_id
+          - visitor_ip
+          - visit_cookie_id
+          - article_id
+          - rate
+          - created_at
+      form:
+        display:
+          NONE: [visitor_cookie_id, visit_cookie_id, article_id]
+          Others: [visitor_ip, rate]
+        class: AnWebAnalyticsArticleRateEventAdminForm
+        fields: {  }
+      edit: ~
+      new: ~

@@ -1,0 +1,22 @@
+.dm .ui-slider { position: relative; text-align: left; }
+.dm .ui-slider .ui-slider-handle { position: absolute; z-index: 2; width: 1.2em; height: 1.2em; cursor: default; }
+.dm .ui-slider .ui-slider-range { position: absolute; z-index: 1; font-size: .7em; display: block; border: 0; background-position: 0 0; }
+
+.dm .ui-slider-horizontal { height: .8em; }
+.dm .ui-slider-horizontal .ui-slider-handle { top: -.3em; margin-left: -.6em; }
+.dm .ui-slider-horizontal .ui-slider-range { top: 0; height: 100%; }
+.dm .ui-slider-horizontal .ui-slider-range-min { left: 0; }
+.dm .ui-slider-horizontal .ui-slider-range-max { right: 0; }
+
+.dm .ui-slider-vertical { width: .8em; height: 100px; }
+.dm .ui-slider-vertical .ui-slider-handle { left: -.3em; margin-left: 0; margin-bottom: -.6em; }
+.dm .ui-slider-vertical .ui-slider-range { left: 0; width: 100%; }
+.dm .ui-slider-vertical .ui-slider-range-min { bottom: 0; }
+.dm .ui-slider-vertical .ui-slider-range-max { top: 0; }
+
+/* css for timepicker */
+.dm .ui-timepicker-div .ui-widget-header{ margin-bottom: 8px; }
+.dm .ui-timepicker-div dl{ text-align: left; }
+.dm .ui-timepicker-div dl dt{ height: 25px; }
+.dm .ui-timepicker-div dl dd{ margin: -25px 0 10px 65px; }
+.dm .ui-timepicker-div td { font-size: 90%; }

@@ -1,0 +1,40 @@
+js:
+
+  anWebAnalyticsPlugin:
+  
+    launchWebAnalytics:                launchWebAnalytics
+    
+    adminPage:                         admin/waPage
+    page:                              collect/waPage
+    
+    adminPageElement:                  admin/waPageElement
+    pageElement:                       collect/waPageElement
+    
+    frontStart:                        start
+    
+    raphael:                           raphael/raphael.min
+    raphaelPopup:                      raphael/popup
+    
+    ui-timepicker:                     jquery-ui/jquery-ui-timepicker-addon
+    
+    flot:                              jquery-flot/jquery.flot.min
+    flot-resize:                       jquery-flot/jquery.flot.resize.min
+    flot-pie:                          jquery-flot/jquery.flot.pie.min
+    flot-crosshair:                    jquery-flot/jquery.flot.crosshair.min
+    
+    backendChart:                      admin/backend/chart/waFlotChart
+    chartInit:                         admin/backend/chart/init
+    backendModuleInit:                 admin/backend/moduleInit
+    adminCtrl:                         admin/backend/waAdminCtrl
+
+    
+css:
+  
+  anWebAnalyticsPlugin:
+  
+    ui-datetimepicker:                 jquery-ui/datetimepicker
+    ui-autocomplete:                   jquery-ui/autocomplete
+  
+    configurePageElements:             admin/configurePageElements
+    
+    backendChart:                      admin/backend/chart

@@ -1,0 +1,16 @@
+all:
+
+  anWebAnalyticsPlugin:
+  
+    visitor_cookie:                krecisie-visitor
+    
+    events:
+    
+      impression:
+        front_configurable:        true
+      click:
+        front_configurable:        true
+      type:
+        front_configurable:        true
+      textselect:
+        front_configurable:        true

@@ -1,0 +1,44 @@
+generator:
+  class: dmAdminDoctrineGenerator
+  param:
+    model_class: AnWebAnalyticsVisitPageAssoc
+    theme: dmAdmin
+    non_verbose_templates: true
+    with_show: false
+    route_prefix: an_web_analytics_visit_page_assoc
+    with_doctrine_route: false
+    config:
+      actions: ~
+      fields: {  }
+      list:
+        actions: {  }
+        batch_actions: {  }
+        loremize: false
+        display:
+          - '_web_analytics'
+          - type
+          - page_id
+          - article_id
+          - datestart
+          - dateend
+        sort:
+          - datestart
+          - desc
+        table_method: getAdminListQuery
+        table_count_method: ~
+        sortable: false
+      filter:
+        display:
+          - page_id
+          - page_title
+          - visit_cookie_id
+          - datestart
+          - dateend
+      form:
+        display:
+          NONE: [visit_cookie_id, page_id]
+          Others: [datestart, dateend]
+        class: AnWebAnalyticsVisitPageAssocAdminForm
+        fields: {  }
+      edit: ~
+      new: ~

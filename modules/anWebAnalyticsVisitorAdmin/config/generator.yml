@@ -1,0 +1,42 @@
+generator:
+  class: dmAdminDoctrineGenerator
+  param:
+    model_class: AnWebAnalyticsVisitor
+    theme: dmAdmin
+    non_verbose_templates: true
+    with_show: false
+    route_prefix: an_web_analytics_visitor
+    with_doctrine_route: false
+    config:
+      actions: ~
+      fields: {  }
+      list:
+        actions: {  }
+        batch_actions: {  }
+        loremize: false
+        display:
+          - '_web_analytics'
+          - os
+          - browser
+          - created_at
+        sort:
+          - created_at
+          - desc
+        table_method: getAdminListQuery
+        table_count_method: ~
+        sortable: false
+      filter:
+        display:
+          - user_cookie_id
+          - os
+          - browser
+          - created_at
+      form:
+        display:
+          'Visitors'' Sessions on Websites': [visits_list]
+          'Events That Occured during Visits': [wa_events_list]
+          Others: [os]
+        class: AnWebAnalyticsVisitorAdminForm
+        fields: {  }
+      edit: ~
+      new: ~

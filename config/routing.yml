@@ -1,0 +1,28 @@
+wa_edit_page_element:
+  class:            sfRoute
+  url:              wa-page-element/edit
+  param:
+    module:         anWebAnalyticsPageElement
+    action:         edit
+  
+  
+wa_delete_page_element:
+  class:            sfRoute
+  url:              wa-page-element/delete
+  param:
+    module:         anWebAnalyticsPageElement
+    action:         delete
+    
+wa_get_page_elements:
+  class:            sfRoute
+  url:              wa-page-element/get
+  param:
+    module:         anWebAnalyticsPageElement
+    action:         getConfiguredElements
+    
+wa_collect_data:
+  class:            sfRoute
+  url:              wa/collect
+  param:
+    module:         anWebAnalytics
+    action:         collect

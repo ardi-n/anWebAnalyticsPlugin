@@ -1,0 +1,25 @@
+
+"Web Analytics":
+
+  General:
+  
+    anWebAnalyticsVisitor:
+      name:                                        Visitor
+    
+    anWebAnalyticsVisit:
+      name:                                        Visit
+    
+    anWebAnalyticsVisitPageAssoc:
+      name:                                        Visit's Pageviews
+      
+      
+    anWebAnalyticsPageElement:
+      name:                                        Page DOM Element
+      credentials:                                 manage_web_analytics
+    
+    
+  "Events":
+    
+    anWebAnalyticsEvent:
+      name:                                        Event
+      credentials:                                 manage_web_analytics

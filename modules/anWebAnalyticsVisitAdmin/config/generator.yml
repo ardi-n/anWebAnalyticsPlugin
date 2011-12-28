@@ -1,0 +1,46 @@
+generator:
+  class: dmAdminDoctrineGenerator
+  param:
+    model_class: AnWebAnalyticsVisit
+    theme: dmAdmin
+    non_verbose_templates: true
+    with_show: false
+    route_prefix: an_web_analytics_visit
+    with_doctrine_route: false
+    config:
+      actions: ~
+      fields:
+
+      list:
+        actions:       {  }
+        batch_actions: {  }
+          
+        loremize: false
+        display:
+          - _web_analytics
+          - _user_cookie_id
+          - referer
+          - visitor_ip
+          - created_at
+        sort:
+          - visit_cookie_id
+          - asc
+        table_method: getAdminListQuery
+        table_count_method: countQuery
+        sortable: false
+      filter:
+        display:
+          - visit_cookie_id
+          - user_cookie_id
+          - referer
+          - visitor_ip
+          - created_at
+      form:
+        display:
+          NONE: [user_cookie_id]
+          'Visits'' Histories': [pages_seen_list, article_pages_seen_list]
+          Others: [referer, visitor_ip]
+        class: AnWebAnalyticsVisitAdminForm
+        fields: {  }
+      edit: ~
+      new: ~

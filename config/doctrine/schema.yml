@@ -1,0 +1,199 @@
+#=====================================================================================================
+# @author Adrian Nowicki <me@adrian-nowicki.com>
+#=====================================================================================================
+
+
+# HOLDS DATA ABOUT UNIQUE USERS VISITING WEBSITE
+AnWebAnalyticsVisitor:
+  
+  actAs:
+    Timestampable:
+      updated:
+        disabled:                  true
+  
+  columns:
+  
+    user_cookie_id:                { type: string(45), notnull: true, primary: true }
+    browser:                       { type: string(45), notnull: true }
+    os:                            { type: string(45), notnull: true }
+    
+    
+  relations:
+  
+    DmUsers:                       { local: user_cookie_id, foreign: dm_user_id, type: many, foreignType: many, refClass: AnWebAnalyticsVisitorDmUserAssoc, foreignAlias: WAVisitors }
+    Visits:                        { class: AnWebAnalyticsVisit, local: user_cookie_id, foreign: user_cookie_id, type: many, foreignType: one, foreignAlias: Visitor }
+    
+
+# ASSOC CLASS TO PERSIST CONNECTIONS BETWEEN
+# DMUSER OBJECTS AND ANALYTICS VISITORS;
+# ONE USER CAN LOG IN FROM DIFFERENT COMPUTERS/BROWSERS
+# BUT MANY USERS CAN LOG IN FROM SAME COMPUTER/BROWSER
+AnWebAnalyticsVisitorDmUserAssoc:
+  
+  columns:
+    user_cookie_id:                { type: string(45), notnull: true, primary: true }
+    dm_user_id:                    { type: integer, primary: true }
+    
+    
+# HOLDS DATA ABOUT USER SESSION ON WEBSITE
+AnWebAnalyticsVisit:
+
+  actAs:
+    Timestampable:
+      updated:
+        disabled:                  true
+
+  columns:
+  
+    visit_cookie_id:               { type: string(45), notnull: true, primary: true }
+    user_cookie_id:                { type: string(45), notnull: true }
+    referer:                       { type: string(255), notnull: true }
+    visitor_ip:                    { type: string(30), notnull: true, ip: true }
+    
+  relations:
+  
+    Visitor:                       { class: AnWebAnalyticsVisitor, local: user_cookie_id, foreign: user_cookie_id, type: one, foreignType: many, foreignAlias: WAVisits, onDelete: CASCADE }
+    DmPagesSeen:                   { class: DmPage, local: visit_cookie_id, foreign: page_id, foreignAlias: WAVisits, refClass: AnWebAnalyticsVisitDmPageAssoc, onDelete: CASCADE }
+    PagesSeen:                     { class: AnWebAnalyticsVisitPageAssoc, local: visit_cookie_id, foreign: visit_cookie_id, foreignAlias: WAVisit, onDelete: CASCADE }
+    
+    
+#======================================================================================================
+# HOLDS DATA ABOUT VISITED PAGES ACROSS ONE SESSION
+# EACH PROJECT CAN DEFINE ITS ASSOCIATIONS WITH AUTOMATIC PAGE MODELS    
+AnWebAnalyticsVisitPageAssoc:
+
+  columns:
+    visit_cookie_id:               { type: string(45), notnull: true }
+    datestart:                     { type: datetime, notnull: true }
+    dateend:                       { type: datetime, notnull: true }
+    
+# DEFAULT ASSOCIATION BETWEEN DMPAGES AND VISITS
+AnWebAnalyticsVisitDmPageAssoc:
+
+  inheritance:
+    type:                          column_aggregation
+    extends:                       AnWebAnalyticsVisitPageAssoc
+    keyField:                      type
+    keyValue:                      page
+
+  columns:
+    page_id:                       { type: integer }
+    
+  relations:
+    DmPage:                        { local: page_id, foreign: id, type: one, foreignType: many, foreignAlias: WAVisitViews, onDelete: SET NULL }
+
+#======================================================================================================
+    
+    
+# ALLOWS FOR QUICKER IDENTIFICATION OF REGION OF THE PAGE    
+# THIS PLUGIN COMES WITH PREDEFINED EVENTS THAT CAN BE TRACKED IN EVERY WA AREA
+AnWebAnalyticsPageElement:
+
+  columns:
+  
+    # DOM TREE ID OF THE ELEMENT
+    dom_id:                        { type: string(100), notnull: true }
+    name:                          { type: string(100) }
+    page_id:                       { type: integer } # leave it null so
+    dm_layout_id:                  { type: integer } 
+    settings:                      { type: array(10000) }
+    
+  relations:
+  
+    DmLayout:                      { local: dm_layout_id, foreign:id, type: one, foreignType: many, foreignAlias: WAElements }
+    DmPage:                        { local: page_id, foreign: id, type: one, foreignType: many, foreignAlias: WAElements, onDelete: CASCADE }
+    
+    
+# HOLDS RECORDS WITH INFO ABOUT EVENTS WHICH OCCURED IN PAGE REGION, EG. CLICK OR ENTERING TEXT INTO FORM
+# ADMIN CAN DEFINE WHAT TYPES OF ACTIONS SHOULD BE LOGGED
+AnWebAnalyticsEvent:
+
+  actAs:
+  
+    Timestampable:
+      updated:
+        disabled:                  true
+
+  columns:
+  
+    page_id:                       { type: integer }
+    visitor_cookie_id:             { type: string(45), notnull: true }
+    visitor_ip:                    { type: string(30), notnull: true }
+    visit_cookie_id:               { type: string(45), notnull: true }
+    page_visit_id:                 { type: integer, notnull: true }
+    page_element_id:               { type: integer }
+    page_x:                        { type: integer(2), unsigned: true }
+    page_y:                        { type: integer(2), unsigned: true }
+  
+  relations:
+  
+    DmPage:                        { local: page_id, foreign: id, type: one, foreignType: many, foreignAlias: WAEvents, onDelete: SET NULL }
+    PageElement:                   { class: AnWebAnalyticsPageElement, local: page_element_id, foreign: id, type: one, foreignType: many, foreignAlias: WAEvents }
+    Visitor:                       { class: AnWebAnalyticsVisitor, local: visitor_cookie_id, foreign: user_cookie_id, type: one, foreignType: many, foreignAlias: WAEvents }
+    Visit:                         { class: AnWebAnalyticsVisit, local: visit_cookie_id, foreign: visit_cookie_id, type: one, foreignType: many, foreignAlias: WAEvents }
+    PageVisit:                     { class: AnWebAnalyticsVisitPageAssoc, local: page_visit_id, foreign: id, type: one, foreignType: many, foreignAlias: WAEvents }
+    
+    
+# ALLOW EXTENDING EVENTS SUBSYSTEM WITH CUSTOM ONES
+AnWebAnalyticsImpressionEvent:
+
+  inheritance:
+    type:                          column_aggregation
+    extends:                       AnWebAnalyticsEvent
+    keyField:                      type
+    keyValue:                      impression
+
+
+# ALLOW EXTENDING EVENTS SUBSYSTEM WITH CUSTOM ONES
+AnWebAnalyticsClickEvent:
+
+  inheritance:
+    type:                          column_aggregation
+    extends:                       AnWebAnalyticsEvent
+    keyField:                      type
+    keyValue:                      click
+  
+  
+# ALLOW EXTENDING EVENTS SUBSYSTEM WITH CUSTOM ONES
+AnWebAnalyticsTypeEvent:
+
+  inheritance:
+    type:                          column_aggregation
+    extends:                       AnWebAnalyticsEvent
+    keyField:                      type
+    keyValue:                      type
+    
+  columns:
+  
+    typed_text:                    { type: clob, notnull: true }
+    
+# ALLOW EXTENDING EVENTS SUBSYSTEM WITH CUSTOM ONES
+AnWebAnalyticsTextSelectEvent:
+
+  inheritance:
+    type:                          column_aggregation
+    extends:                       AnWebAnalyticsEvent
+    keyField:                      type
+    keyValue:                      text_select
+    
+  columns:
+  
+    selected_text:                 { type: clob, notnull: true }
+    
+
+
+#============================================================================
+#==== KEEP TRACK OF WINDOWS USERS STICKED TO THEIR ADMIN HOME SCREENS
+#============================================================================
+AnWebAnalyticsAdminHomeWindow:
+  
+  options:
+    symfony:                        { form: false, filter: false }
+  
+  columns:
+    id_user:                        { type: integer }
+    module_component:               { type: string(100) }
+    filter:                         { type: array(1000) }
+    
+  relations:
+    DmUser:                         { local: id_user, foreign: id, type: one, foreignType: many, foreignAlias: WAHomeWindows }

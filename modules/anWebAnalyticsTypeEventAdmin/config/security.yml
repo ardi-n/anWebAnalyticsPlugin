@@ -1,0 +1,17 @@
+edit:
+  credentials:   manage_web_analytics
+  
+update:
+  credentials:   manage_web_analytics
+  
+delete:
+  credentials:   manage_web_analytics
+  
+batchDelete:
+  credentials:   manage_web_analytics
+  
+new:
+  credentials:   manage_web_analytics
+  
+create:
+  credentials:   manage_web_analytics

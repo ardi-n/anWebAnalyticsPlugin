@@ -1,0 +1,50 @@
+generator:
+  class: dmAdminDoctrineGenerator
+  param:
+    model_class: AnWebAnalyticsArticleCommentEvent
+    theme: dmAdmin
+    non_verbose_templates: true
+    with_show: false
+    route_prefix: an_web_analytics_article_comment_event
+    with_doctrine_route: false
+    config:
+      actions: ~
+      fields: {  }
+      list:
+        actions:  {  }
+        batch_actions:
+          _delete:
+            credentials:    manage_web_analytics_events
+        display:
+          - 'id'
+          - visitor_cookie_id
+          - visit_cookie_id
+          - article_id
+          - comment_id
+          - visitor_ip
+          - created_at
+        sort:
+          - created_at
+          - desc
+        table_method: getAdminListQuery
+        table_count_method: ~
+        sortable: false
+      filter:
+        display:
+          - id          
+          - visitor_cookie_id
+          - visitor_ip
+          - visit_cookie_id
+          - article_id
+          - comment_id
+          - created_at
+      form:
+        display:
+          NONE: [page_id, page_element_id, visitor_cookie_id, visit_cookie_id, article_id]
+          'Typed text': [typed_text]
+          'Selected text': [selected_text]
+          Others: [visitor_ip, page_x, page_y, page, rate, poll_id]
+        class: AnWebAnalyticsArticleCommentEventAdminForm
+        fields: {  }
+      edit: ~
+      new: ~

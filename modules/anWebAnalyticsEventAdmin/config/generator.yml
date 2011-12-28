@@ -1,0 +1,40 @@
+generator:
+  class: dmAdminEventsGenerator
+  param:
+    model_class: AnWebAnalyticsEvent
+    theme: dmAdmin
+    non_verbose_templates: true
+    with_show: false
+    route_prefix: an_web_analytics_event
+    with_doctrine_route: false
+    config:
+      actions: ~
+      fields: {  }
+      list:
+        loremize: false
+        actions:  {  }
+        batch_actions: {  }
+        
+        sort:
+          - created_at
+          - desc
+        table_method: getAdminListQuery
+        table_count_method: ~
+        sortable: false
+      filter:
+        display:
+          - type
+          - created_at
+          - visitor_cookie_id
+          - visit_cookie_id
+          - page_id
+          - page_title
+          - page_element_id
+      form:
+        display:
+          NONE: [visit_cookie_id]
+          Others: [page_id, page_x, page_y, type]
+        class: AnWebAnalyticsEventAdminForm
+        fields: {  }
+      edit: ~
+      new: ~

@@ -1,0 +1,12 @@
+parameters:
+
+  web_analytics.class:        AnWebAnalytics
+  web_analytics.options:      []
+
+
+services:
+
+  web_analytics:
+    class:                    %web_analytics.class%
+    shared:                   true
+    arguments:                [ @request, @dispatcher, %web_analytics.options% ]

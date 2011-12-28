@@ -1,0 +1,12 @@
+.wa-selected {
+	outline: 2px groove lightGrey;
+}
+
+.wa-descriptor {
+	position: absolute;
+	display: none;
+}
+
+.wa-configured-page-element {
+	outline: 2px groove yellow;
+}

@@ -1,0 +1,8 @@
+all:
+  is_secure:        true
+  credentials:      manage_web_analytics
+
+  
+getConfiguredElements:
+  is_secure:        false
+  credentials:      []
