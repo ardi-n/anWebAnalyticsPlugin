@@ -108,7 +108,28 @@ class AnWebAnalyticsAdminChartFormFilterHelper {
 	
 					$tempGreaterPeriod = $prevItem[$greaterPeriod];
 					$tempPeriod = $prevItem[$period];
-					$tempCreatedAt = $prevItem[$this->dateTimeField];
+					$tempCreatedAt = date('Y-m-d H:i:s', strtotime("+1 {$period}s", strtotime($prevItem[$this->dateTimeField])));
+					
+					for (; $tempCreatedAt <= $item[$this->dateTimeField]; $tempCreatedAt = date('Y-m-d H:i:s', strtotime("+1 {$period}s", strtotime($tempCreatedAt)))) {
+						
+						$tempTime = strtotime($tempCreatedAt);
+						
+						$tempPeriod = date(self::$period_formats[$period], $tempTime);
+						$tempPeriod = $tempPeriod[0] == '0' ? $tempPeriod[1] : $tempPeriod;
+						
+						$tempGreaterPeriod = date(self::$period_formats[$greaterPeriod], $tempTime);
+						$tempGreaterPeriod = $tempGreaterPeriod[0] == '0' ? $tempGreaterPeriod[1] : $tempGreaterPeriod;
+						$tempYear = date('Y', $tempTime);
+						 
+						if ($tempGreaterPeriod != $item[$greaterPeriod] || $tempPeriod != $item[$period]) {
+							
+							$modDataItem = array('COUNT' => 0, $greaterPeriod => $tempGreaterPeriod,  $period => $tempPeriod, $this->dateTimeField => $tempCreatedAt);
+							$modDataItem['year'] = $tempYear;
+							
+							$modData[] = $modDataItem;
+						}
+					}
+					/*
 					while ($tempGreaterPeriod != $item[$greaterPeriod] || $tempPeriod != $item[$period]) {
 	
 						$tempCreatedAt = date('Y-m-d H:i:s', strtotime("+1 {$period}s", strtotime($tempCreatedAt)));
@@ -126,9 +147,9 @@ class AnWebAnalyticsAdminChartFormFilterHelper {
 						$modData[] = $modDataItem;
 					}
 						
-						
+						*/
 				}
-	
+	  
 				$modData[] = $item;
 	
 			}
@@ -136,7 +157,7 @@ class AnWebAnalyticsAdminChartFormFilterHelper {
 				$modData[] = $item;
 			}
 		}
-	
+	//var_dump($period, $modData);exit;
 		return $modData;
 	}
 	

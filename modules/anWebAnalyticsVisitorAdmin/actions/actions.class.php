@@ -34,41 +34,6 @@ class anWebAnalyticsVisitorAdminActions extends autoAnWebAnalyticsVisitorAdminAc
 	
 	
 	
-	protected function buildQuery() {
-	
-		$this->buildChartQuery();
-	
-		return parent::buildQuery();
-	}
-	
-	
-	
-	protected function buildChartQuery()
-	{
-		$tableMethod = 'countQuery';
-	
-		$filterValues = array_merge($this->getFilters(), $this->getChartFilters());
-		//var_dump($filterValues);exit;
-		if (null === $this->chartFilters)
-		{
-			$this->chartFilters = new AnWebAnalyticsVisitorAdminChartFormFilter($filterValues);
-		}
-	
-		$this->chartFilters->setTableMethod($tableMethod);
-	
-		$query = $this->chartFilters->buildQuery($filterValues);
-	
-		//		$event = $this->dispatcher->filter(new sfEvent($this, 'admin.build_query'), $query);
-		//		$query = $event->getReturnValue();
-	
-		AnWebAnalyticsVisitorTable::getInstance()->setOption('chartQuery', $query);
-		AnWebAnalyticsVisitorTable::getInstance()->setOption('filters', $this->chartFilters);
-	}
-	
-	
-	
-	
-	
 	
 	
 	

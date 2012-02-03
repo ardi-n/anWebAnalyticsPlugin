@@ -18,22 +18,35 @@ abstract class PluginAnWebAnalyticsVisitPageAssocFormFilter extends BaseAnWebAna
 		$this->setWidget('visit_cookie_id', new sfWidgetFormInputHidden());
 		
 		$this->setWidget('datestart', new sfWidgetFormFilterDate(array(
-			'from_date' => new sfWidgetFormDmDate(array(), array('style' => 'float: none;')),
-			'to_date' => new sfWidgetFormDmDate(array(), array('style' => 'float: none;')),
+			'from_date' => new sfWidgetFormInputText(array(), array('style' => 'float: none;', 'class' => 'datepicker_me')),
+			'to_date' => new sfWidgetFormInputText(array(), array('style' => 'float: none;', 'class' => 'datepicker_me')),
 			'template' => '%from_date% - %to_date% (from - to)',
 			'with_empty' => false
 		)));
 		
 		$this->validatorSchema['datestart'] = new sfValidatorDateRange(array(
 		      'required' => false,  
-		      'from_date' => new dmValidatorDate(array('required' => false)),  
-		      'to_date' => new dmValidatorDate(array('required' => false))  
+		      'from_date' => new sfValidatorDateTime(array('required' => false)),  
+		      'to_date' => new sfValidatorDateTime(array('required' => false))  
 		));
 		
+		
+		$this->setWidget('dateend', new sfWidgetFormFilterDate(array(
+					'from_date' => new sfWidgetFormInputText(array(), array('style' => 'float: none;', 'class' => 'datepicker_me')),
+					'to_date' => new sfWidgetFormInputText(array(), array('style' => 'float: none;', 'class' => 'datepicker_me')),
+					'template' => '%from_date% - %to_date% (from - to)',
+					'with_empty' => false
+		)));
+		
+		$this->validatorSchema['dateend'] = new sfValidatorDateRange(array(
+				      'required' => false,  
+				      'from_date' => new sfValidatorDateTime(array('required' => false)),  
+				      'to_date' => new sfValidatorDateTime(array('required' => false))  
+		));
+		
+		
 		$this->setWidget('page_id', new sfWidgetFormInputHidden());
-		$this->setValidator('page_id', new sfValidatorDoctrineChoice(array(
-		  		'model' => 'DmPage',
-		  		'multiple' => false,
+		$this->setValidator('page_id', new sfValidatorString(array(
 		  		'required' => false
 		)));
 		
@@ -76,4 +89,26 @@ abstract class PluginAnWebAnalyticsVisitPageAssocFormFilter extends BaseAnWebAna
 		));
 	}
 	
+	
+	/**
+	 * filter results based on page
+	 * the page can be a static one DmPage or some other model
+	 * defined by user so the value contains information
+	 * on how field is named
+	 * 
+	 * @param unknown_type $query
+	 * @param unknown_type $field
+	 * @param unknown_type $value
+	 */
+	public function addPageIdColumnQuery($query, $field, $value) {
+	
+		list($realField, $realValue) = explode('|', $value);
+		
+		if ($this->getTable()->hasColumn($realField)) {
+			
+			$a = $query->getRootAlias();
+			$query->andWhere("$a.$realField = ?", $realValue);
+		}
+		
+	}
 }

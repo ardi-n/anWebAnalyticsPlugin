@@ -4,8 +4,12 @@
 		
 		var $datetimepickers = $box.find('.datepicker_me');
 		
+		var date = new Date();
+		
 		$datetimepickers.datetimepicker({
-			dateFormat:		'yy-mm-dd'
+			dateFormat:		'yy-mm-dd',
+			defaultDate:	date,
+			maxDate:		date
 		});
 	});
 

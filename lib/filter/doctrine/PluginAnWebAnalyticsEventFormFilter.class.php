@@ -21,9 +21,7 @@ abstract class PluginAnWebAnalyticsEventFormFilter extends BaseAnWebAnalyticsEve
 		$this->getValidator('visit_cookie_id')->setOption('required', false);
 		
 		$this->setWidget('page_id', new sfWidgetFormInputHidden());
-		$this->setValidator('page_id', new sfValidatorDoctrineChoice(array(
-		  		'model' => 'DmPage',
-		  		'multiple' => false,
+		$this->setValidator('page_id', new sfValidatorString(array(
 		  		'required' => false
 		)));
 		// additional field that is autocompleted with title, also page_id is filled
@@ -32,10 +30,9 @@ abstract class PluginAnWebAnalyticsEventFormFilter extends BaseAnWebAnalyticsEve
 			'rel' => $this->getWidget('page_id')->generateId($this->widgetSchema->generateName('page_id')),
 			'data-autocomplete-href' => 
 							$this->getService('helper')->link(array(
-								'sf_route' => 'an_web_analytics_event',
+								'sf_route' => 'an_web_analytics_visit_page_assoc',
 								'action' => 'fetchChoices'
 							))
-							->param('model', 'dm_page')
 							->getHref()
 		)));
 		
@@ -49,6 +46,19 @@ abstract class PluginAnWebAnalyticsEventFormFilter extends BaseAnWebAnalyticsEve
 	
 	protected function setupCreatedAt() {
 		
+		$this->setWidget('created_at', new sfWidgetFormFilterDate(array(
+					'from_date' => new sfWidgetFormInputText(array(), array('style' => 'float: none;', 'class' => 'datepicker_me')),
+					'to_date' => new sfWidgetFormInputText(array(), array('style' => 'float: none;', 'class' => 'datepicker_me')),
+					'template' => '%from_date% - %to_date% (from - to)',
+					'with_empty' => false
+		)));
+		
+		$this->validatorSchema['created_at'] = new sfValidatorDateRange(array(
+				      'required' => false,  
+				      'from_date' => new sfValidatorDateTime(array('required' => false)),  
+				      'to_date' => new sfValidatorDateTime(array('required' => false))  
+		));
+		/*
 		$this->setWidget('created_at', new sfWidgetFormChoice(array('choices' => array(
 		        'hour' => $this->getI18n()->__('This hour'),
 		        'today' => $this->getI18n()->__('Today'),
@@ -60,6 +70,7 @@ abstract class PluginAnWebAnalyticsEventFormFilter extends BaseAnWebAnalyticsEve
 		$this->setValidator('created_at', new sfValidatorChoice(array(
 			'choices' => array_keys($this->getWidget('created_at')->getOption('choices'))
 		)));
+		*/
 	}
 	
 	
@@ -109,6 +120,16 @@ abstract class PluginAnWebAnalyticsEventFormFilter extends BaseAnWebAnalyticsEve
 		));
 	}
 	
+	public function getStylesheets() {
+	
+		return array_merge(parent::getStylesheets(), array(
+				'lib.ui-datepicker' => null,
+				'anWebAnalyticsPlugin.ui-datetimepicker' => null,
+				'anWebAnalyticsPlugin.ui-autocomplete' => null
+//				'anWebAnalyticsPlugin.ui-custom' => null
+		));
+	}
+	
 	
 	public function getJavascripts() {
 		
@@ -116,9 +137,36 @@ abstract class PluginAnWebAnalyticsEventFormFilter extends BaseAnWebAnalyticsEve
 			'lib.ui-core',
 			'lib.ui-widget',
 			'lib.ui-position',
-			'/dmCorePlugin/lib/jquery-ui/js/minified/jquery.ui.autocomplete.min.js'
+			'/dmCorePlugin/lib/jquery-ui/js/minified/jquery.ui.slider.min.js',
+			'lib.ui-datepicker',
+			'/dmCorePlugin/lib/jquery-ui/js/minified/jquery.ui.autocomplete.min.js',
+			'anWebAnalyticsPlugin.ui-timepicker'
 		));
 	}
 	
+	
+	
+	
+	/**
+	 * filter results based on page
+	 * the page can be a static one DmPage or some other model
+	 * defined by user so the value contains information
+	 * on how field is named
+	 * 
+	 * @param unknown_type $query
+	 * @param unknown_type $field
+	 * @param unknown_type $value
+	 */
+	public function addPageIdColumnQuery($query, $field, $value) {
+	
+		list($realField, $realValue) = explode('|', $value);
+		
+		if ($this->getTable()->hasColumn($realField)) {
+			
+			$a = $query->getRootAlias();
+			$query->andWhere("$a.$realField = ?", $realValue);
+		}
+		
+	}
 	
 }

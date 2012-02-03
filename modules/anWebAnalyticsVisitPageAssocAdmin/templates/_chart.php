@@ -14,6 +14,9 @@ use_javascript('anWebAnalyticsPlugin.adminCtrl');
 //use_stylesheet('anWebAnalyticsPlugin.ui-custom');
 use_stylesheet('anWebAnalyticsPlugin.backendChart');
 
+use_javascripts_for_form($chartFilters);
+use_stylesheets_for_form($chartFilters);
+
 if (isset($error)) {
 	echo $error;
 	return;
@@ -57,9 +60,6 @@ echo _close('table');
 
 echo _tag('div.wa-chart-holder');
 
-
-use_javascripts_for_form($chartFilters);
-use_stylesheets_for_form($chartFilters);
 
 echo _link(array('sf_route' => 'an_web_analytics_visit_page_assoc', 'action' => 'stickChartToHome'))->text(__('Stick chart with search parameters set up to homepage'));
 

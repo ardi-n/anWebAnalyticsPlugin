@@ -51,12 +51,12 @@ class AnWebAnalyticsVisitorAdminChartFormFilter extends AnWebAnalyticsVisitorFor
 		return $this->chartHelper->getRealChartValues($this->getValues());
 	}
 	
-	
+	 
 	public function getFinalData($filterValues) {
 		
-		$q = $this->buildQuery($filterValues);
+		$q = $this->buildQuery($filterValues);//var_dump($q->getSqlQuery());exit;
 		$data = $q->fetchArray();
-		
+		//var_dump($data);exit;
 		return $this->chartHelper->getFinalData($data, $filterValues['period_groupby']);
 	}
 	

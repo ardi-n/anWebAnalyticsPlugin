@@ -8,8 +8,13 @@ use_javascript('anWebAnalyticsPlugin.flot-resize');
 use_javascript('anWebAnalyticsPlugin.flot-crosshair');
 use_javascript('anWebAnalyticsPlugin.backendChart');
 use_javascript('anWebAnalyticsPlugin.chartInit');
+use_javascript('anWebAnalyticsPlugin.backendModuleInit');
+use_javascript('anWebAnalyticsPlugin.adminCtrl');
 
 use_stylesheet('anWebAnalyticsPlugin.backendChart');
+
+use_javascripts_for_form($chartFilters);
+use_stylesheets_for_form($chartFilters);
 
 if (isset($error)) {
 	echo $error;
@@ -19,7 +24,7 @@ if (isset($error)) {
 $nbData = count($data);
 $labelStep = ceil($nbData / 60) + 3;
 
-echo _open('div.wa-chart-container');
+echo _open('div.wa-chart-container', array('data-filters-loaded-listener' => ''));
 
 echo _open('table.wa-chart-data');
 
@@ -54,8 +59,6 @@ echo _close('table');
 
 echo _tag('div.wa-chart-holder');
 
-
-use_javascripts_for_form($chartFilters);
 
 echo _link(array('sf_route' => 'an_web_analytics_visit', 'action' => 'stickChartToHome'))->text(__('Stick chart with search parameters set up to homepage'));
 
